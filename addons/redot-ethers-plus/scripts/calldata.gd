@@ -42,15 +42,14 @@ func abi_encode(inputs, _args):
 	var args = []
 	var selector = 0
 	for input in inputs:
-						
 		var new_arg = {
 			"value": _args[selector],
 			"type": input["type"],
 			"calldata": "",
 			"length": 0,
 			"dynamic": false
-			}
-				
+		}
+		
 		if input["type"].contains("tuple"):
 			new_arg["components"] = input["components"]
 		args.push_back(new_arg)
@@ -58,7 +57,6 @@ func abi_encode(inputs, _args):
 	
 	var calldata = construct_calldata(args)
 	return calldata
-	
 
 func construct_calldata(args):
 	var body = []
@@ -98,9 +96,7 @@ func construct_calldata(args):
 			# Save dynamic args in the tail, to be encoded 
 			# after static args have been encoded.
 			tail.push_back(arg)
-			
 		else:
-			
 			# Static args go straight into the body, so that 
 			# they are encoded first.
 			body.push_back(arg)
@@ -208,7 +204,7 @@ func get_function_selector(function):
 	return function_selector
 
 
-func get_tuple_components(input):	
+func get_tuple_components(input):
 	var selector_string = ""
 	
 	for component in input["components"]:
@@ -271,7 +267,6 @@ func encode_fixed_bytes(arg):
 
 
 func encode_array(arg):
-	
 	var _arg_type = arg["type"]
 	var value_array = arg["value"]
 	
@@ -293,7 +288,6 @@ func encode_array(arg):
 	var args = []
 	
 	for value in value_array:
-	
 		var new_arg = {
 			"value": value,
 			"type": arg_type,
@@ -329,7 +323,7 @@ func encode_tuple(arg):
 			"calldata": "",
 			"length": 0,
 			"dynamic": false
-				}
+		}
 		if component["type"].contains("tuple"):
 			new_arg["components"] = component["components"]
 		args.push_back(new_arg)
@@ -338,8 +332,6 @@ func encode_tuple(arg):
 	var calldata = construct_calldata(args)
 	
 	return calldata
-	
-
 
 
 ##########   DECODING   #########
@@ -362,7 +354,6 @@ func abi_decode(_outputs, calldata):
 	
 	var outputs = []
 	for output in _outputs:
-
 		var new_output = {
 			"type" = output["type"],
 			"dynamic" = false,
@@ -377,7 +368,6 @@ func abi_decode(_outputs, calldata):
 	
 
 func deconstruct_calldata(outputs, calldata):
-	
 	var decoded_values = []
 	var dynamic_outputs = []
 		
@@ -531,7 +521,6 @@ func decode_fixed_bytes(bytes, _bytes_amount):
 
 
 func decode_array(arg, calldata):
-	
 	var decoded_value = []
 	var _arg_type = arg["type"]
 	var position = 0
